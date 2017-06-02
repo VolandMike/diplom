@@ -2,7 +2,7 @@ package net.proselyte.springsecurityapp.model;
 
 import javax.persistence.*;
 import java.util.HashSet;
-
+import java.util.Set;
 
 
 @Entity
@@ -39,18 +39,46 @@ public class Task {
 
     // the tasks on which this task is dependant
 
-    @ManyToOne(fetch = FetchType.LAZY )
-    private DependenciesTask dependenciesTask;
+    @ManyToOne(cascade={CascadeType.ALL})
+    @JoinColumn(name="dependenciesTask")
+    private Task taskDependencies;
 
-    public DependenciesTask getDependenciesTask() {
-        return dependenciesTask;
+    @OneToMany(mappedBy="taskDependencies")
+    private Set<Task> dependencies = new HashSet<Task>();
+
+    public Task getTaskDependencies() {
+        return taskDependencies;
     }
 
-    public void setDependenciesTask(DependenciesTask dependenciesTask) {
-        this.dependenciesTask = dependenciesTask;
+    @Override
+    public String toString() {
+        return "Task{" +
+                "id=" + id +
+                ", cost=" + cost +
+                ", criticalCost=" + criticalCost +
+                ", name='" + name + '\'' +
+                ", earlyStart=" + earlyStart +
+                ", earlyFinish=" + earlyFinish +
+                ", latestStart=" + latestStart +
+                ", latestFinish=" + latestFinish +
+                ", taskDependencies=" + taskDependencies +
+                ", dependencies=" + dependencies +
+                '}';
     }
 
-    public Task(String name, int cost) {
+    public void setTaskDependencies(Task taskDependencies) {
+        this.taskDependencies = taskDependencies;
+    }
+
+    public Set<Task> getDependencies() {
+        return dependencies;
+    }
+
+    public void setDependencies(Set<Task> dependencies) {
+        this.dependencies = dependencies;
+    }
+
+    public Task(String name, int cost, Task taskDependencies) {
         this.name = name;
         this.cost = cost;
         this.earlyFinish = -1;
@@ -58,6 +86,7 @@ public class Task {
         this.criticalCost = 0;
         this.latestStart = 0;
         this.latestFinish = 0;
+        this.taskDependencies = taskDependencies;
 
 
     }
@@ -128,6 +157,10 @@ public class Task {
     public void setLatestFinish(int latestFinish) {
         this.latestFinish = latestFinish;
     }
+
+
+
+
 
 
 /*

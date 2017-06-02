@@ -14,39 +14,48 @@
 </head>
 <body>
 
-<div class="container xd-container">
-    <table class="table table-stripped">
-        <thead>
-        <tr>
-            <th>Task</th>
-            <th>Dependensies?</th>
-        </tr>
-        </thead>
+<div class="container">
+   <form:form method="post" modelAttribute="allTask" >
+        <table class =" table table-stripped">
+             <thead>
+                 <tr>
+                     <th>Task</th>
+                     <th>Cost</th>
+                     <th>Dependencies</th>
+                 </tr>
+             </thead>
         <tbody>
-        <c:forEach var="task" items="${allTask}">
-            <tr>
-                <td><c:out value="${task.name}"/></td>
-                <td><c:out value="${task.cost}"/></td>
+            <c:forEach var="task" items="${allTask}">
+                <tr>
+                    <td><c:out value="${task.name}"/></td>
+                    <td><c:out value="${task.cost}"/></td>
+
+
                 <td>
                     <a class="btn bt btn-default" href='<spring:url value="/task/edit/${task.id}"/>'>Edit
                     </a>
                     <a class="btn btn-default" href='<spring:url value="/task/delete/${task.id}" htmlEscape="true"/>'>Delete
                     </a>
-                    <div>
-                        <c:if test="${taskId == task.id}">
-                            <c:if test="${DeleteError!=null}">
-                                <b style="color: #843534">
-                                    <c:out value="${DeleteError}"/>
-                                </b>
-                            </c:if>
+                    <a class="btn btn-default" href='<spring:url value="/task/dependencies/${task.id}" htmlEscape="true"/>'>addDep
+                    </a>
+                <div>
+                    <c:if test="${taskId == task.id}">
+                        <c:if test="${DeleteError!=null}">
+                            <b style="color: #843534">
+                                <c:out value="${DeleteError}"/>
+                            </b>
                         </c:if>
-                    </div>
-                </td>
-            </tr>
-        </c:forEach>
-        </tbody>
-        <a class="btn btn-default" href='<spring:url value="/allTask" htmlEscape="true"/>'>Cancel</a>
+                    </c:if>
+                </div>
+            </td>
+        </tr>
+                </c:forEach>
+    </tbody>
+        <a class="btn btn-default" href='<spring:url value="/addTask" htmlEscape="true"/>'>Cancel</a>
     </table>
+   </form:form>
 </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="${contextPath}/resources/js/bootstrap.min.js"></script>
 </body>
 </html>

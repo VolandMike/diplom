@@ -8,8 +8,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
-import static net.proselyte.springsecurityapp.model.Task.maxCost;
-
 /**
  */
 @Service

@@ -1,6 +1,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+
 <%--
   Created by IntelliJ IDEA.
   User: Михаил
@@ -24,8 +25,13 @@
 
 <body>
 <div class="container">
+
     <form:form method="POST" modelAttribute="taskForm" >
+
         <h2 class="form-signin-heading">Create your timetable</h2>
+
+
+
         <spring:bind path="name">
             <div class="form-group ${status.error ? 'has-error' : ''}">
                 <form:input type="text" path="name" class="form-control" placeholder="task_name"
@@ -40,15 +46,21 @@
                 <form:errors path="cost"></form:errors>
             </div>
         </spring:bind>
-        <spring:bind path="dependenciesTask" >
-            <c:forEach var="task" items="${dependenciesTask}">
-                <form:option value="${task.dependenciesTask}"/>
-            </c:forEach>
-        </spring:bind>
 
-                        <button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
-        <a class="btn btn-default" href='<spring:url value="/allTask" htmlEscape="true"/>'>View allTask</a>
-                    </form:form>
-                </div>
-                </body>
-                </html>
+                    <form:select path="taskDependencies">
+                        <form:option value="NONE" label=" -- Please Select --" />
+                        <form:options items="${allTask}" />
+                    </form:select>
+
+
+
+
+                                <button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
+                <a class="btn btn-default" href='<spring:url value="/allTask" htmlEscape="true"/>'>View allTask</a>
+                            </form:form>
+    </c:if>
+                        </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="${contextPath}/resources/js/bootstrap.min.js"></script>
+                        </body>
+                        </html>

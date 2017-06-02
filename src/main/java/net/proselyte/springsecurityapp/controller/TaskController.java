@@ -9,16 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
-/**
- * Created by Михаил on 29.04.2017.
- */
+
 @Controller
 public class TaskController {
 
@@ -36,28 +31,30 @@ public class TaskController {
     public String createTask(Model model) {
 
         model.addAttribute("taskForm", new Task());
-        model.addAttribute("dependenciesTask",new DependenciesTask());
+      //  model.addAttribute("dependenciesTask",new DependenciesTask());
 
         return "addTask";
     }
 
     @RequestMapping(value = "/addTask", method = RequestMethod.POST)
-    public String createTask(@ModelAttribute("taskForm")Task task, Model model,
-                             @ModelAttribute("dependenciesTask") DependenciesTask dependenciesTask)
+    public String createTask(@ModelAttribute("taskForm")Task task, Model model)
     {
 
-        List<Task> taskList = new ArrayList<>();
 
-        taskList.add(task);
 
 
         task.setEarlyFinish(-1);
         task.setEarlyStart(0);
         task.setCriticalCost(0);
 
+        Iterable<Task> taskIterable = taskService.getAllTask();
 
-        dependenciesTask.setDependencies(taskList);
-        dependenciesTaskService.addDependenciesTask(dependenciesTask);
+        model.addAttribute("allTask", taskIterable);
+
+/*
+        Task dep = new Task();
+        task.setTaskDependencies(dep);
+*/
 
 
         taskService.addTask(task);
@@ -84,7 +81,7 @@ public class TaskController {
 
             Iterable<Task> taskIterable = taskService.getAllTask();
             model.addAttribute("allTask", taskIterable);
-            model.addAttribute("DeleteError", new String("Removal of the current chapter is impossible"));
+            model.addAttribute("DeleteError", new String("Removal of the current Task is impossible"));
             model.addAttribute("taskId", taskId);
             return "allTask";
         }
@@ -99,11 +96,27 @@ public class TaskController {
         Long id = Long.decode(taskId);
 
         Task editTask = taskService.findById(id);
+
+
         model.addAttribute("taskForm", editTask);
+
 
         return "addTask";
     }
 
+    @RequestMapping(value = "/task/dependencies/{taskId}", method = RequestMethod.GET)
+    public String processAddDependencies (@PathVariable String taskId,Model model, Task dep){
+
+        Long id = Long.decode(taskId);
+
+        Task editTask = taskService.findById(id);
+
+        editTask.setTaskDependencies(dep);
+
+        model.addAttribute("taskForm",editTask);
+
+        return "addTask";
+    }
 
 
 }
