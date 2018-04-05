@@ -21,25 +21,20 @@ public class TaskController {
     @Autowired
     private TaskService taskService;
 
-    @Autowired
-    private DependenciesTaskService dependenciesTaskService;
-
-
 
 
     @RequestMapping(value = "/addTask", method = RequestMethod.GET)
     public String createTask(Model model) {
 
         model.addAttribute("taskForm", new Task());
-      //  model.addAttribute("dependenciesTask",new DependenciesTask());
+
 
         return "addTask";
     }
 
     @RequestMapping(value = "/addTask", method = RequestMethod.POST)
-    public String createTask(@ModelAttribute("taskForm")Task task, Model model)
+    public String createTask(@ModelAttribute("taskForm")Task task, Model model,Task dep)
     {
-
 
 
 
@@ -51,10 +46,12 @@ public class TaskController {
 
         model.addAttribute("allTask", taskIterable);
 
+
 /*
         Task dep = new Task();
         task.setTaskDependencies(dep);
 */
+        task.setTaskDependencies(dep);
 
 
         taskService.addTask(task);
@@ -116,6 +113,20 @@ public class TaskController {
         model.addAttribute("taskForm",editTask);
 
         return "addTask";
+    }
+
+    @RequestMapping(value = "/timeTable", method = RequestMethod.GET)
+    public  String processCreateTimeTable (Model model, Task task){
+
+
+        Iterable<Task> taskIterable = taskService.getAllTask();
+        model.addAttribute("allTask",taskIterable);
+
+
+
+
+
+        return "timeTable";
     }
 
 

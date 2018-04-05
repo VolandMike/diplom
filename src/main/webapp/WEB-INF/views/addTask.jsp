@@ -28,7 +28,7 @@
 
     <form:form method="POST" modelAttribute="taskForm" >
 
-        <h2 class="form-signin-heading">Create your timetable</h2>
+        <h2 class="form-signin-heading">Create your tasks</h2>
 
 
 
@@ -47,18 +47,31 @@
             </div>
         </spring:bind>
 
-                    <form:select path="taskDependencies">
-                        <form:option value="NONE" label=" -- Please Select --" />
-                        <form:options items="${allTask}" />
-                    </form:select>
+
+        <label for="id_label_single">
+            Choose the dependent task from the list below by clicking on the field
+
+
+
+            <select class="js-example-basic-single js-states form-control" id="id_label_single">
+                <option value="">TaskA</option>
+                <option value="">TaskQ</option>
+                <option value="">TaskX</option>
+                <option value="">TaskC</option>
+                <option value="">TaskF</option>
+                <option value="">Start</option>
+            </select>
+        </label>
 
 
 
 
-                                <button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
+
+                                <button class="btn btn-lg btn-primary btn-block" type="submit">Add Task</button>
                 <a class="btn btn-default" href='<spring:url value="/allTask" htmlEscape="true"/>'>View allTask</a>
+
                             </form:form>
-    </c:if>
+
                         </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 <script src="${contextPath}/resources/js/bootstrap.min.js"></script>

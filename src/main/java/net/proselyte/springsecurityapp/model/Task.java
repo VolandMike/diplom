@@ -13,7 +13,15 @@ public class Task {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private static int maxCost;
+
+    @ManyToOne(cascade={CascadeType.ALL})
+    @JoinColumn(name="dependenciesTask")
+    private Task taskDependencies;
+
+    @OneToMany(mappedBy="taskDependencies")
+    private Set<Task> dependencies = new HashSet<Task>();
+
+
     @Column(name = "task_cost")
     private int cost;
     // the cost of the task along the critical path
@@ -39,12 +47,7 @@ public class Task {
 
     // the tasks on which this task is dependant
 
-    @ManyToOne(cascade={CascadeType.ALL})
-    @JoinColumn(name="dependenciesTask")
-    private Task taskDependencies;
 
-    @OneToMany(mappedBy="taskDependencies")
-    private Set<Task> dependencies = new HashSet<Task>();
 
     public Task getTaskDependencies() {
         return taskDependencies;
